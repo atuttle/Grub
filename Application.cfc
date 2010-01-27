@@ -6,7 +6,7 @@ component displayname="Application" extends="framework" {
 	this.setclientcookies = true;
 	this.scriptprotect = false;
 	this.ormenabled = true;
-	this.ormsettings = { cfclocation = 'model' , dbCreate = "dropCreate" , logSQL = true , dialect = 'MySQLwithInnoDB' };
+	this.ormsettings = { cfclocation = 'model' , dbCreate = "update" , logSQL = true , dialect = 'MySQLwithInnoDB' };
 	this.datasource = "grub";
 	this.mappings = {};
 
