@@ -68,12 +68,14 @@ component displayname="Application" extends="framework" {
 		var menu = new menu();
 		menu.setMenuName('default');
 		menu.setUser(admin);
-		//admin.addmenu(menu);
+
+		menu = new menu();
+		menu.setMenuName('menu2');
+		menu.setUser(admin);
 
 		EntitySave(admin);
 
-writeDump(admin);
-abort;
+		ormFlush();
 
 /*
 		//we eat like Ali McBeal
