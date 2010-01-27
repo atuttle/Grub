@@ -65,44 +65,36 @@ component displayname="Application" extends="framework" {
 		admin.setpasswordHash( hashPassword('test') );
 
 		//I has a menu
-		var menu = new menu();
-		menu.setMenuName('default');
-		menu.setUser(admin);
+		var defaultMenu = new menu();
+		defaultMenu.setMenuName('default');
+		defaultMenu.setUser(admin);
 
-		menu = new menu();
+		var menu = new menu();
 		menu.setMenuName('menu2');
 		menu.setUser(admin);
 
-		EntitySave(admin);
-
-		ormFlush();
-
-/*
 		//we eat like Ali McBeal
-		var meal = new model.meal();
+		var meal = new meal();
 		meal.setMealName('Chicken Alfredo');
 		meal.setMealType('Chicken,Pasta');
 		meal.setMaxFrequency(2);
-		meal.setMenu(menu);
+		meal.setMenu(defaultMenu);
 
 		meal = new model.meal();
 		meal.setMealName('Hamburgers');
 		meal.setMealType('Beef');
 		meal.setMaxFrequency(4);
-		EntitySave(meal);
-		menu.addMeal(meal);
+		meal.setMenu(defaultMenu);
 
 		meal = new model.meal();
 		meal.setMealName('Spaghetti');
 		meal.setMealType('Pasta');
 		meal.setMaxFrequency(2);
-		EntitySave(meal);
-		menu.addMeal(meal);
+		meal.setMenu(defaultMenu);
 
-		//save menu and cascade save meals
-		EntitySave(menu);
-*/
-
+		//save and cascade data
+		EntitySave(admin);
+		ormFlush();
 	}
 
 	private string function hashPassword(required string strPassIn) output="false" {

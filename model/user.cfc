@@ -7,6 +7,7 @@ component hint="A User Object" output="false" persistent="true" accessors="true"
 	property name="EmailVerified" type="boolean" hint="whether or not the email address has been verified" default="false" elementtype="boolean";
 	property name="PasswordHash" type="string" hint="hashed password" length="32";
 
+	//relationship properties (aka foreign keys)
 	property name="Menus" fieldtype="one-to-many" cfc="menu" fkcolumn="UserId" cascade="all" type="array" singularname="Menu" inverse="true";
 
 }
