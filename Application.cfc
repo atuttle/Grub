@@ -6,7 +6,7 @@ component displayname="Application" extends="framework" {
 	this.setclientcookies = true;
 	this.scriptprotect = false;
 	this.ormenabled = true;
-	this.ormsettings = { cfclocation = 'model' , dialect = 'MySQLwithInnoDB' };
+	this.ormsettings = { cfclocation = 'model' , dbCreate = "dropCreate" , logSQL = true , dialect = 'MySQLwithInnoDB' };
 	this.datasource = "grub";
 	this.mappings = {};
 
@@ -27,6 +27,9 @@ component displayname="Application" extends="framework" {
 			case "prod":
 				break;
 		}
+
+		//make application mode globally accessable
+		application.mode = variables.mode;
 
 		//password salt used to securely hash passwords
 		application.passwordSalt = 'GG!90$%';
@@ -54,7 +57,7 @@ component displayname="Application" extends="framework" {
 		import model.*;
 
 		//create admin account
-		var admin = new model.user();
+		var admin = new user();
 		admin.setfname('Administrator');
 		admin.setlname('Administrator');
 		admin.setemail('adam@fusiongrokker.com');
@@ -62,12 +65,15 @@ component displayname="Application" extends="framework" {
 		admin.setpasswordHash( hashPassword('test') );
 
 		//I has a menu
-		var menu = new model.menu();
-		menu.setUserId(admin.getUserId());
-		//admin.addmenu(menu);
+		var menu = new menu();
+		menu.setMenuName('default');
 		menu.setUser(admin);
+		//admin.addmenu(menu);
 
 		EntitySave(admin);
+
+writeDump(admin);
+abort;
 
 /*
 		//we eat like Ali McBeal
@@ -90,9 +96,10 @@ component displayname="Application" extends="framework" {
 		meal.setMaxFrequency(2);
 		EntitySave(meal);
 		menu.addMeal(meal);
-*/
+
 		//save menu and cascade save meals
 		EntitySave(menu);
+*/
 
 	}
 
