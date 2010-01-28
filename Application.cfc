@@ -20,19 +20,30 @@ component displayname="Application" extends="framework" {
 	};
 
 	boolean function setupApplication() output="false" {
-		switch(variables.mode){
+
+		application.mode = variables.mode;		//make application mode globally accessable
+		application.passwordSalt = 'GG!90$%';	//password salt used to securely hash passwords
+
+		switch(application.mode){
 			case "dev":
+				//recreate database on every request
 				this.ormsettings.dbCreate = 'dropCreate';
+				//never show friendly error page on dev
+				structDelete(variables.framework, "error");
+				break;
+			case "stage":
+				//update db schema as needed
+				this.ormsettings.dbCreate = 'update';
+				//show error pages
+				variables.framework.error = 'error.show';
 				break;
 			case "prod":
+				//update db schema as needed
+				this.ormsettings.dbCreate = 'update';
+				//show error pages
+				variables.framework.error = 'error.show';
 				break;
 		}
-
-		//make application mode globally accessable
-		application.mode = variables.mode;
-
-		//password salt used to securely hash passwords
-		application.passwordSalt = 'GG!90$%';
 
 		//run db population step (add initial data)
 		//this could be done with a sql script, but I like CF-ORM! :)
@@ -106,7 +117,10 @@ component displayname="Application" extends="framework" {
 			case "www.grub.dev":
 			case "grub.dev":
 				return "dev";
-				break;
+			case "stage.grublicio.us":
+				return "stage";
+			case "grublicio.us":
+				return "prod";
 			default:
 				return "prod";
 		}
